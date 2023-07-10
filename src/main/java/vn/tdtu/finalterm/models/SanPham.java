@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString(exclude = "quanLySanPhamList")
+@ToString(exclude = {"quanLySanPhamList", "chiTietPhieuNhapList"})
 public class SanPham {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -36,4 +36,8 @@ public class SanPham {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "maSP")
     @JsonIgnore
     private List<QuanLySanPham> quanLySanPhamList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "sanPham")
+    @JsonIgnore
+    private List<ChiTietPhieuNhap> chiTietPhieuNhapList;
 }

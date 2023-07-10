@@ -5,14 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import vn.tdtu.finalterm.models.ChiNhanh;
-import vn.tdtu.finalterm.models.QuanLySanPham;
-import vn.tdtu.finalterm.models.SanPham;
-import vn.tdtu.finalterm.models.TaiKhoan;
-import vn.tdtu.finalterm.repositories.ChiNhanhRepository;
-import vn.tdtu.finalterm.repositories.QuanLySPRepository;
-import vn.tdtu.finalterm.repositories.SanPhamRepository;
-import vn.tdtu.finalterm.repositories.TaiKhoanRepository;
+import vn.tdtu.finalterm.models.*;
+import vn.tdtu.finalterm.repositories.*;
 
 import java.sql.Date;
 import java.util.List;
@@ -26,7 +20,9 @@ public class Sample {
     CommandLineRunner initDataBase(SanPhamRepository sanPhamRepository,
                                    TaiKhoanRepository taiKhoanRepository,
                                    ChiNhanhRepository chiNhanhRepository,
-                                   QuanLySPRepository quanLySPRepository) {
+                                   QuanLySPRepository quanLySPRepository,
+                                   PhieuNhapRepository phieuNhapRepository,
+                                   ChiTietPNRepository chiTietPNRepository) {
         return new CommandLineRunner() {
             @Override
             public void run(String... args) throws Exception {
@@ -134,6 +130,74 @@ public class Sample {
                 List<QuanLySanPham> box2 = quanLySPRepository.findAll();
 
                 logger.info("list Quan Ly San Pham: " + box2);
+
+                // PhieuNhap + ChiNhanh
+                PhieuNhap.PhieuNhapBuilder phieuNhapA = PhieuNhap.builder()
+                        .id(1L)
+                        .ngayNhap(new Date(2020 - 1900, 2, 3))
+                        .tongCong(2000.0f)
+                        .chiNhanh(chiNhanhRepository.getReferenceById(1L));
+
+                PhieuNhap.PhieuNhapBuilder phieuNhapB = PhieuNhap.builder()
+                        .id(2L)
+                        .ngayNhap(new Date(2023 - 1900, 1, 11))
+                        .tongCong(3000.0f)
+                        .chiNhanh(chiNhanhRepository.getReferenceById(1L));
+
+                PhieuNhap.PhieuNhapBuilder phieuNhapC = PhieuNhap.builder()
+                        .id(3L)
+                        .ngayNhap(new Date(2022 - 1900, 0, 4))
+                        .tongCong(4000.0f)
+                        .chiNhanh(chiNhanhRepository.getReferenceById(2L));
+
+                logger.info("insert: " + phieuNhapRepository.save(phieuNhapA.build()));
+                logger.info("insert: " + phieuNhapRepository.save(phieuNhapB.build()));
+                logger.info("insert: " + phieuNhapRepository.save(phieuNhapC.build()));
+
+                // ChiTietPhieuNhap
+                ChiTietPhieuNhap.ChiTietPhieuNhapBuilder chiTietA = ChiTietPhieuNhap.builder()
+                        .id(1L)
+                        .giaNhap(3000.0f)
+                        .soLuong(11)
+                        .tongTien(0.0f)
+                        .sanPham(sanPhamRepository.getReferenceById(1L))
+                        .chiNhanh(chiNhanhRepository.getReferenceById(1L))
+                        .phieuNhap(phieuNhapRepository.getReferenceById(1L));
+
+                ChiTietPhieuNhap.ChiTietPhieuNhapBuilder chiTietA2 = ChiTietPhieuNhap.builder()
+                        .id(2L)
+                        .giaNhap(400.0f)
+                        .soLuong(100)
+                        .tongTien(0.0f)
+                        .sanPham(sanPhamRepository.getReferenceById(1L))
+                        .chiNhanh(chiNhanhRepository.getReferenceById(1L))
+                        .phieuNhap(phieuNhapRepository.getReferenceById(1L));
+
+                ChiTietPhieuNhap.ChiTietPhieuNhapBuilder chiTietB = ChiTietPhieuNhap.builder()
+                        .id(3L)
+                        .giaNhap(2000.0f)
+                        .soLuong(10)
+                        .tongTien(0.0f)
+                        .sanPham(sanPhamRepository.getReferenceById(2L))
+                        .chiNhanh(chiNhanhRepository.getReferenceById(1L))
+                        .phieuNhap(phieuNhapRepository.getReferenceById(1L));
+
+//                ChiTietPhieuNhap.ChiTietPhieuNhapBuilder chiTietC = ChiTietPhieuNhap.builder()
+//                        .id(1L)
+//                        .giaNhap(3000.0f)
+//                        .soLuong(11)
+//                        .tongTien(0.0f)
+//                        .sanPham(sanPhamRepository.getReferenceById(1L))
+//                        .chiNhanh(chiNhanhRepository.getReferenceById(1L))
+//                        .phieuNhap(phieuNhapRepository.getReferenceById(1L));
+
+                logger.info("insert: " + chiTietPNRepository.save(chiTietA.build()));
+                logger.info("insert: " + chiTietPNRepository.save(chiTietA2.build()));
+                logger.info("insert: " + chiTietPNRepository.save(chiTietB.build()));
+
+                List<ChiTietPhieuNhap> box3 = chiTietPNRepository.findAll();
+
+                logger.info("list Chi Tiet Phieu Nhap: " + box3);
             }
         };
     }
