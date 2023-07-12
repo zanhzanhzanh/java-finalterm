@@ -16,5 +16,5 @@ public interface ChiTietPNRepository extends JpaRepository<ChiTietPhieuNhap, Lon
 
     List<ChiTietPhieuNhap> findAllByChiNhanhAndSanPham(Optional<ChiNhanh> chiNhanh, Optional<SanPham> sanPham);
 
-    List<ChiTietPhieuNhap> findByPhieuNhap(Optional<PhieuNhap> foundPN);
+    List<ChiTietPhieuNhap> findAllByPhieuNhap(Optional<PhieuNhap> foundPN);
 }

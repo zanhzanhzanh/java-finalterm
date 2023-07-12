@@ -30,8 +30,8 @@ public class ChiTietPNController {
     }
 
     @PostMapping("/chiTietPN") // Custom Router
-    public ResponseEntity<ResponseObject> insertChiTietPNAndPhieuNhap(@Valid @RequestBody TaoPhieuNhapDTO taoPhieuNhapDTO) {
-        return chiTietPNService.insertChiTietPNAndPhieuNhap(taoPhieuNhapDTO);
+    public ResponseEntity<ResponseObject> insertChiTietPNAndPNAndQLSP(@Valid @RequestBody TaoPhieuNhapDTO taoPhieuNhapDTO) {
+        return chiTietPNService.insertChiTietPNAndPNAndQLSP(taoPhieuNhapDTO);
     }
 
     @PutMapping("/chiTietPN/{id}")

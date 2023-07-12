@@ -71,7 +71,7 @@ public class PhieuNhapService {
         }
 
         // Find All ChiTietPhieuNhap relevant to Delete
-        List<ChiTietPhieuNhap> boxCTPN = chiTietPNRepository.findByPhieuNhap(foundPN);
+        List<ChiTietPhieuNhap> boxCTPN = chiTietPNRepository.findAllByPhieuNhap(foundPN);
         chiTietPNRepository.deleteAll(boxCTPN);
 
         // Delete

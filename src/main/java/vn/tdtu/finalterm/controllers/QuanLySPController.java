@@ -5,7 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.tdtu.finalterm.models.ChiNhanh;
+import vn.tdtu.finalterm.models.QuanLySanPham;
 import vn.tdtu.finalterm.models.ResponseObject;
+import vn.tdtu.finalterm.models.SanPham;
 import vn.tdtu.finalterm.service.QuanLySPService;
 
 @RestController
@@ -27,5 +29,15 @@ public class QuanLySPController {
     @GetMapping("/quanLySPByCN/{id}") // Custom Router
     public ResponseEntity<ResponseObject> findAllQuanLySPByChiNhanhId(@PathVariable("id") Long chiNhanhId) {
         return quanLySPService.findAllQuanLySPByChiNhanhId(chiNhanhId);
+    }
+
+    @PutMapping("/quanLySP/{id}")
+    public ResponseEntity<ResponseObject> updateQuanLySP(@RequestBody QuanLySanPham quanLySanPham, @PathVariable("id") Long quanLySPId) {
+        return quanLySPService.updateQuanLySP(quanLySanPham, quanLySPId);
+    }
+
+    @PutMapping("/quanLySP/moveSP/{id}") // Custom Router
+    public ResponseEntity<ResponseObject> moveSPInSameCN(@RequestBody QuanLySanPham quanLySanPham, @PathVariable("id") Long quanLySPId) {
+        return quanLySPService.moveSPInSameCN(quanLySanPham, quanLySPId);
     }
 }

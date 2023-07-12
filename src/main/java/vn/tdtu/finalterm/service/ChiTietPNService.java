@@ -6,10 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import vn.tdtu.finalterm.dto.TaoPhieuNhapDTO;
 import vn.tdtu.finalterm.models.*;
-import vn.tdtu.finalterm.repositories.ChiNhanhRepository;
-import vn.tdtu.finalterm.repositories.ChiTietPNRepository;
-import vn.tdtu.finalterm.repositories.PhieuNhapRepository;
-import vn.tdtu.finalterm.repositories.SanPhamRepository;
+import vn.tdtu.finalterm.repositories.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,6 +23,10 @@ public class ChiTietPNService {
     SanPhamRepository sanPhamRepository;
     @Autowired
     PhieuNhapRepository phieuNhapRepository;
+    @Autowired
+    QuanLySPService quanLySPService;
+    @Autowired
+    QuanLySPRepository quanLySPRepository;
 
     public ResponseEntity<ResponseObject> findAllChiTietPN() {
         return ResponseEntity.status(HttpStatus.OK).body(
@@ -62,7 +63,7 @@ public class ChiTietPNService {
         );
     }
 
-    public ResponseEntity<ResponseObject> insertChiTietPNAndPhieuNhap(TaoPhieuNhapDTO taoPhieuNhapDTO) {
+    public ResponseEntity<ResponseObject> insertChiTietPNAndPNAndQLSP(TaoPhieuNhapDTO taoPhieuNhapDTO) {
         List<SanPham> boxSanPham = new ArrayList<>();
 
         // Check All SanPham Id
@@ -81,6 +82,7 @@ public class ChiTietPNService {
                 new ResponseObject("failed", "Can't find ChiNhanh with id = " + taoPhieuNhapDTO.getChiNhanhId(), "")
         );
 
+        // Add PhieuNhap
         taoPhieuNhapDTO.getPhieuNhap().setChiNhanh(chiNhanh.get());
         PhieuNhap phieuNhapAfterSave = phieuNhapRepository.save(taoPhieuNhapDTO.getPhieuNhap());
 
@@ -108,6 +110,9 @@ public class ChiTietPNService {
         phieuNhap.get().setTongCong(sumTongTien);
         PhieuNhap resPhieuNhap = phieuNhapRepository.save(phieuNhap.get());
 
+        // Add QuanlySanPham
+        quanLySPService.insertQuanLySP(resPhieuNhap.getNgayNhap(), chiTietPhieuNhapList);
+
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("ok", "Insert ChiTietPhieuNhap and PhieuNhap Success", chiTietPhieuNhapList)
         );
@@ -121,6 +126,9 @@ public class ChiTietPNService {
                     new ResponseObject("failed", "Can't find ChiTietPhieuNhap with id = " + chiTietPNId, "")
             );
         }
+
+        // Take previous soLuong for QLSP
+        int soLuongOld = foundCTPN.get().getSoLuong();
 
         // Find PhieuNhap to Update TongCong (Get Old TongTien and subtract it)
         Optional<PhieuNhap> phieuNhap = phieuNhapRepository.findById(foundCTPN.get().getPhieuNhap().getId());
@@ -140,8 +148,11 @@ public class ChiTietPNService {
         phieuNhap.get().setTongCong(phieuNhap.get().getTongCong() + updatedCTPN.getTongTien());
         phieuNhapRepository.save(phieuNhap.get());
 
+        // Update QuanLySP
+        quanLySPService.updateTrongKhoSameSoLuong(foundCTPN.get().getSanPham(), foundCTPN.get().getChiNhanh(), soLuongOld, updatedCTPN.getSoLuong());
+
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("ok", "Update SanPham Success", updatedCTPN)
+                new ResponseObject("ok", "Update ChiTietPN, PhieuNhap, QuanLySP Success", updatedCTPN)
         );
     }
 

@@ -36,6 +36,9 @@ public class QuanLySanPham {
     private int trongKho;
 
     @PositiveOrZero
+    private int tongHang;
+
+    @PositiveOrZero
     private int trangThai;
 
     @ManyToOne
@@ -45,4 +48,10 @@ public class QuanLySanPham {
     @ManyToOne
     @JoinColumn(name = "fk_maCN")
     private ChiNhanh maCN;
+
+    @PrePersist
+    @PreUpdate
+    private void calculateTongHang() {
+        this.tongHang = this.trenKe + this.trongKho;
+    }
 }

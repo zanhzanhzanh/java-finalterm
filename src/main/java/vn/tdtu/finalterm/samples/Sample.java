@@ -89,47 +89,47 @@ public class Sample {
                 logger.info("list Chi Nhanh: " + box);
 
                 // QuanLySanPham + SanPham + ChiNhanh
-                QuanLySanPham.QuanLySanPhamBuilder quanLyA = QuanLySanPham.builder()
-                        .id(1L)
-                        .hanTon(new Date(2023, 3, 2))
-                        .giaBan(302.0f)
-                        .trenKe(0)
-                        .trongKho(3000)
-                        .trangThai(1)
-                        // This line shouldn't use productA.build() because It's just Transient
-                        // not Persistent (we can fix this by put CascadeType.ALL next to FK of QuanLySP Class
-                        // but it will save 2 time because productA save once above and once from CascadeType.ALL)
-                        // so just call productA from DB(Detached -> Persistent) (productA was saved from the first time)
-                        .maSP(sanPhamRepository.getReferenceById(1L))
-                        .maCN(chiNhanhB.build());
-
-                QuanLySanPham.QuanLySanPhamBuilder quanLyB = QuanLySanPham.builder()
-                        .id(2L)
-                        .hanTon(new Date(2021, 4, 2))
-                        .giaBan(102.0f)
-                        .trenKe(100)
-                        .trongKho(2000)
-                        .trangThai(0)
-                        .maSP(sanPhamRepository.getReferenceById(2L))
-                        .maCN(chiNhanhB.build());
-
-                QuanLySanPham.QuanLySanPhamBuilder quanLyC = QuanLySanPham.builder()
-                        .id(3L)
-                        .hanTon(new Date(2021, 4, 2))
-                        .giaBan(102.0f)
-                        .trenKe(100)
-                        .trongKho(2000)
-                        .trangThai(0)
-                        .maSP(sanPhamRepository.getReferenceById(3L))
-                        .maCN(chiNhanhA.build());
-
-                logger.info("insert: " + quanLySPRepository.save(quanLyA.build()));
-                logger.info("insert: " + quanLySPRepository.save(quanLyB.build()));
-                logger.info("insert: " + quanLySPRepository.save(quanLyC.build()));
-
-                List<QuanLySanPham> box2 = quanLySPRepository.findAll();
-
-                logger.info("list Quan Ly San Pham: " + box2);
+//                QuanLySanPham.QuanLySanPhamBuilder quanLyA = QuanLySanPham.builder()
+//                        .id(1L)
+//                        .hanTon(new Date(2023, 3, 2))
+//                        .giaBan(302.0f)
+//                        .trenKe(0)
+//                        .trongKho(3000)
+//                        .trangThai(1)
+//                        // This line shouldn't use productA.build() because It's just Transient
+//                        // not Persistent (we can fix this by put CascadeType.ALL next to FK of QuanLySP Class
+//                        // but it will save 2 time because productA save once above and once from CascadeType.ALL)
+//                        // so just call productA from DB(Detached -> Persistent) (productA was saved from the first time)
+//                        .maSP(sanPhamRepository.getReferenceById(1L))
+//                        .maCN(chiNhanhB.build());
+//
+//                QuanLySanPham.QuanLySanPhamBuilder quanLyB = QuanLySanPham.builder()
+//                        .id(2L)
+//                        .hanTon(new Date(2021, 4, 2))
+//                        .giaBan(102.0f)
+//                        .trenKe(100)
+//                        .trongKho(2000)
+//                        .trangThai(0)
+//                        .maSP(sanPhamRepository.getReferenceById(2L))
+//                        .maCN(chiNhanhB.build());
+//
+//                QuanLySanPham.QuanLySanPhamBuilder quanLyC = QuanLySanPham.builder()
+//                        .id(3L)
+//                        .hanTon(new Date(2021, 4, 2))
+//                        .giaBan(102.0f)
+//                        .trenKe(100)
+//                        .trongKho(2000)
+//                        .trangThai(0)
+//                        .maSP(sanPhamRepository.getReferenceById(3L))
+//                        .maCN(chiNhanhA.build());
+//
+//                logger.info("insert: " + quanLySPRepository.save(quanLyA.build()));
+//                logger.info("insert: " + quanLySPRepository.save(quanLyB.build()));
+//                logger.info("insert: " + quanLySPRepository.save(quanLyC.build()));
+//
+//                List<QuanLySanPham> box2 = quanLySPRepository.findAll();
+//
+//                logger.info("list Quan Ly San Pham: " + box2);
 
                 // PhieuNhap + ChiNhanh
                 PhieuNhap.PhieuNhapBuilder phieuNhapA = PhieuNhap.builder()
