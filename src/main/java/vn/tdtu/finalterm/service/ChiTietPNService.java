@@ -25,8 +25,6 @@ public class ChiTietPNService {
     PhieuNhapRepository phieuNhapRepository;
     @Autowired
     QuanLySPService quanLySPService;
-    @Autowired
-    QuanLySPRepository quanLySPRepository;
 
     public ResponseEntity<ResponseObject> findAllChiTietPN() {
         return ResponseEntity.status(HttpStatus.OK).body(
@@ -113,6 +111,9 @@ public class ChiTietPNService {
         // Add QuanlySanPham
         quanLySPService.insertQuanLySP(resPhieuNhap.getNgayNhap(), chiTietPhieuNhapList);
 
+        // Update All TrangThai of QuanLySP
+        quanLySPService.updateAllTrangThai();
+
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("ok", "Insert ChiTietPhieuNhap and PhieuNhap Success", chiTietPhieuNhapList)
         );
@@ -170,8 +171,12 @@ public class ChiTietPNService {
         phieuNhap.get().setTongCong(phieuNhap.get().getTongCong() - foundCTPN.get().getTongTien());
         phieuNhapRepository.save(phieuNhap.get());
 
-        // Delete
+        // Delete Quantity from ChiTietPN
+        quanLySPService.updateEffectByDeleteChiTietPN(foundCTPN.get());
+
+        // Delete chiTietPN
         chiTietPNRepository.deleteById(chiTietPNId);
+
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("ok", "Delete ChiTietPhieuNhap Success", "")
         );

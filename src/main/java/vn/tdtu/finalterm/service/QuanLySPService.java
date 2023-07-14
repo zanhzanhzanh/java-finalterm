@@ -13,7 +13,6 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 @Service
 public class QuanLySPService {
@@ -23,18 +22,24 @@ public class QuanLySPService {
     ChiNhanhRepository chiNhanhRepository;
 
     public ResponseEntity<ResponseObject> findAllQuanLySP() {
+        updateAllTrangThai();
+
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("ok", "Query All QuanLy Success", quanLySPRepository.findAll())
         );
     }
 
     public ResponseEntity<ResponseObject> findAllQuanLySPByChiNhanh(ChiNhanh chiNhanh) {
+        updateAllTrangThai();
+
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("ok", "Query All QuanLy By ChiNhanh Success", quanLySPRepository.findAllByMaCN(chiNhanh))
         );
     }
 
     public ResponseEntity<ResponseObject> findAllQuanLySPByChiNhanhId(Long chiNhanhId) {
+        updateAllTrangThai();
+
         Optional<ChiNhanh> chiNhanh = chiNhanhRepository.findById(chiNhanhId);
 
         if(!chiNhanh.isPresent()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
@@ -170,5 +175,56 @@ public class QuanLySPService {
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("ok", "Update QuanLySanPham Success", quanLySPRepository.save(foundQuanLySanPham.get()))
         );
+    }
+
+    public ResponseEntity<ResponseObject> updateAllTrangThai() {
+        List<QuanLySanPham> boxQuanLySanPham = quanLySPRepository.findAll();
+        if(boxQuanLySanPham.size() <= 0) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ResponseObject("failed", "Can't find any QuanLySanPham", "")
+            );
+        }
+
+        for(QuanLySanPham quanLySanPham : boxQuanLySanPham) {
+            if(quanLySanPham.getHanTon().before(new java.util.Date())) {
+                quanLySanPham.setTrangThai(0);
+            } else quanLySanPham.setTrangThai(1);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("ok", "Update TrangThai Success", quanLySPRepository.saveAll(boxQuanLySanPham))
+        );
+    }
+
+    // Use for system
+    public void updateEffectByDeleteChiTietPN(ChiTietPhieuNhap chiTietPhieuNhap) {
+        QuanLySanPham quanLySanPham = quanLySPRepository.findByMaSPAndMaCN(chiTietPhieuNhap.getSanPham(), chiTietPhieuNhap.getChiNhanh())
+                .map(QLSP -> {
+                    int sLConLaiTrenKe = QLSP.getTrenKe() - chiTietPhieuNhap.getSoLuong();
+                    if(sLConLaiTrenKe > 0) {
+                        QLSP.setTrenKe(sLConLaiTrenKe);
+                    } else if(sLConLaiTrenKe == 0) {
+                        QLSP.setTrenKe(0);
+                    } else {
+                        QLSP.setTrenKe(0);
+
+                        int sLConLaiTrongKho = QLSP.getTrongKho() + sLConLaiTrenKe;
+
+                        if (sLConLaiTrongKho > 0) {
+                            QLSP.setTrongKho(sLConLaiTrongKho);
+                        } else if (sLConLaiTrongKho == 0) {
+                            QLSP.setTrongKho(0);
+                        } else {
+                            QLSP.setTrongKho(0);
+
+                            // Nhớ trừ cho Doanh Thu
+                        }
+
+                    }
+
+                    return quanLySPRepository.save(QLSP);
+                }).orElseGet(() -> {
+                    return null;
+                });
     }
 }

@@ -40,4 +40,9 @@ public class QuanLySPController {
     public ResponseEntity<ResponseObject> moveSPInSameCN(@RequestBody QuanLySanPham quanLySanPham, @PathVariable("id") Long quanLySPId) {
         return quanLySPService.moveSPInSameCN(quanLySanPham, quanLySPId);
     }
+
+    @PutMapping("/quanLySP/updateTrangThai") // Custom Router
+    public ResponseEntity<ResponseObject> updateAllTrangThai() {
+        return quanLySPService.updateAllTrangThai();
+    }
 }

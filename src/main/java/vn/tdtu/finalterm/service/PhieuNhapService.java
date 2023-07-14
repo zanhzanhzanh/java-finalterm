@@ -20,6 +20,8 @@ public class PhieuNhapService {
     ChiNhanhRepository chiNhanhRepository;
     @Autowired
     ChiTietPNRepository chiTietPNRepository;
+    @Autowired
+    QuanLySPService quanLySPService;
 
     public ResponseEntity<ResponseObject> findAllPhieuNhap() {
         return ResponseEntity.status(HttpStatus.OK).body(
@@ -72,6 +74,13 @@ public class PhieuNhapService {
 
         // Find All ChiTietPhieuNhap relevant to Delete
         List<ChiTietPhieuNhap> boxCTPN = chiTietPNRepository.findAllByPhieuNhap(foundPN);
+
+        // Delete Quantity from ChiTietPN
+        for(ChiTietPhieuNhap chiTietPhieuNhap : boxCTPN) {
+            quanLySPService.updateEffectByDeleteChiTietPN(chiTietPhieuNhap);
+        }
+
+        // Delete All ChiTietPhieuNhap
         chiTietPNRepository.deleteAll(boxCTPN);
 
         // Delete
