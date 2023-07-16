@@ -76,8 +76,9 @@ public class PhieuNhapService {
         List<ChiTietPhieuNhap> boxCTPN = chiTietPNRepository.findAllByPhieuNhap(foundPN);
 
         // Delete Quantity from ChiTietPN
-        for(ChiTietPhieuNhap chiTietPhieuNhap : boxCTPN) {
-            quanLySPService.updateEffectByDeleteChiTietPN(chiTietPhieuNhap);
+        ResponseEntity<ResponseObject> checkQuantity = quanLySPService.updateEffectByDeleteChiTietPN(boxCTPN);
+        if(checkQuantity != null) {
+            return checkQuantity;
         }
 
         // Delete All ChiTietPhieuNhap

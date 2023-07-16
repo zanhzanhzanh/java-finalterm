@@ -6,10 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.tdtu.finalterm.models.PhieuNhap;
 import vn.tdtu.finalterm.models.ResponseObject;
-import vn.tdtu.finalterm.models.SanPham;
 import vn.tdtu.finalterm.service.PhieuNhapService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping(path = "")

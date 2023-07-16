@@ -32,6 +32,6 @@ public class PhieuNhap {
     private ChiNhanh chiNhanh;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "phieuNhap")
-    @JsonIgnore
+//    @JsonIgnore
     private List<ChiTietPhieuNhap> chiTietPhieuNhapList;
 }

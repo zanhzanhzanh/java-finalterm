@@ -41,6 +41,6 @@ public class ChiTietPNController {
 
     @DeleteMapping("/chiTietPN/{id}")
     public ResponseEntity<ResponseObject> deleteChiTietPN(@PathVariable("id") Long chiTietPNId) {
-        return chiTietPNService.deleteChiTietSP(chiTietPNId);
+        return chiTietPNService.deleteChiTietPN(chiTietPNId);
     }
 }

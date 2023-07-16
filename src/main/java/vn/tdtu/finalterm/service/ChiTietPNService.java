@@ -157,7 +157,7 @@ public class ChiTietPNService {
         );
     }
 
-    public ResponseEntity<ResponseObject> deleteChiTietSP(Long chiTietPNId) {
+    public ResponseEntity<ResponseObject> deleteChiTietPN(Long chiTietPNId) {
         Optional<ChiTietPhieuNhap> foundCTPN = chiTietPNRepository.findById(chiTietPNId);
 
         if(!foundCTPN.isPresent()) {
@@ -166,13 +166,18 @@ public class ChiTietPNService {
             );
         }
 
+        // Delete Quantity for QuanLySP from ChiTietPN
+        List<ChiTietPhieuNhap> termCTPN = new ArrayList<>();
+        termCTPN.add(foundCTPN.get());
+        ResponseEntity<ResponseObject> checkQuantity = quanLySPService.updateEffectByDeleteChiTietPN(termCTPN);
+        if(checkQuantity != null) {
+            return checkQuantity;
+        }
+
         // Find PhieuNhap to Update TongCong (Get Old TongTien and subtract it)
         Optional<PhieuNhap> phieuNhap = phieuNhapRepository.findById(foundCTPN.get().getPhieuNhap().getId());
         phieuNhap.get().setTongCong(phieuNhap.get().getTongCong() - foundCTPN.get().getTongTien());
         phieuNhapRepository.save(phieuNhap.get());
-
-        // Delete Quantity from ChiTietPN
-        quanLySPService.updateEffectByDeleteChiTietPN(foundCTPN.get());
 
         // Delete chiTietPN
         chiTietPNRepository.deleteById(chiTietPNId);

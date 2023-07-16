@@ -6,6 +6,7 @@ import vn.tdtu.finalterm.models.ChiNhanh;
 import vn.tdtu.finalterm.models.QuanLySanPham;
 import vn.tdtu.finalterm.models.SanPham;
 
+import java.nio.channels.FileChannel;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,4 +15,6 @@ public interface QuanLySPRepository extends JpaRepository<QuanLySanPham, Long> {
     List<QuanLySanPham> findAllByMaCN(ChiNhanh chiNhanh);
 
     Optional<QuanLySanPham> findByMaSPAndMaCN(SanPham sanPham, ChiNhanh chiNhanh);
+
+    Optional<QuanLySanPham> findByMaSPIdAndMaCNId(Long id, Long chiNhanhId);
 }

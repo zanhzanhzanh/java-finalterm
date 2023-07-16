@@ -86,7 +86,7 @@ public class Sample {
 
                 List<ChiNhanh> box = chiNhanhRepository.findAll();
 
-                logger.info("list Chi Nhanh: " + box);
+//                logger.info("list Chi Nhanh: " + box);
 
                 // QuanLySanPham + SanPham + ChiNhanh
 //                QuanLySanPham.QuanLySanPhamBuilder quanLyA = QuanLySanPham.builder()
@@ -150,9 +150,9 @@ public class Sample {
                         .tongCong(4000.0f)
                         .chiNhanh(chiNhanhRepository.getReferenceById(2L));
 
-                logger.info("insert: " + phieuNhapRepository.save(phieuNhapA.build()));
-                logger.info("insert: " + phieuNhapRepository.save(phieuNhapB.build()));
-                logger.info("insert: " + phieuNhapRepository.save(phieuNhapC.build()));
+//                logger.info("insert: " + phieuNhapRepository.save(phieuNhapA.build()));
+//                logger.info("insert: " + phieuNhapRepository.save(phieuNhapB.build()));
+//                logger.info("insert: " + phieuNhapRepository.save(phieuNhapC.build()));
 
                 // ChiTietPhieuNhap
                 ChiTietPhieuNhap.ChiTietPhieuNhapBuilder chiTietA = ChiTietPhieuNhap.builder()
@@ -190,14 +190,14 @@ public class Sample {
 //                        .sanPham(sanPhamRepository.getReferenceById(1L))
 //                        .chiNhanh(chiNhanhRepository.getReferenceById(1L))
 //                        .phieuNhap(phieuNhapRepository.getReferenceById(1L));
-
-                logger.info("insert: " + chiTietPNRepository.save(chiTietA.build()));
-                logger.info("insert: " + chiTietPNRepository.save(chiTietA2.build()));
-                logger.info("insert: " + chiTietPNRepository.save(chiTietB.build()));
-
-                List<ChiTietPhieuNhap> box3 = chiTietPNRepository.findAll();
-
-                logger.info("list Chi Tiet Phieu Nhap: " + box3);
+//
+//                logger.info("insert: " + chiTietPNRepository.save(chiTietA.build()));
+//                logger.info("insert: " + chiTietPNRepository.save(chiTietA2.build()));
+//                logger.info("insert: " + chiTietPNRepository.save(chiTietB.build()));
+//
+//                List<ChiTietPhieuNhap> box3 = chiTietPNRepository.findAll();
+//
+//                logger.info("list Chi Tiet Phieu Nhap: " + box3);
             }
         };
     }

@@ -11,8 +11,10 @@ import vn.tdtu.finalterm.repositories.QuanLySPRepository;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
 public class QuanLySPService {
@@ -197,34 +199,101 @@ public class QuanLySPService {
     }
 
     // Use for system
-    public void updateEffectByDeleteChiTietPN(ChiTietPhieuNhap chiTietPhieuNhap) {
-        QuanLySanPham quanLySanPham = quanLySPRepository.findByMaSPAndMaCN(chiTietPhieuNhap.getSanPham(), chiTietPhieuNhap.getChiNhanh())
-                .map(QLSP -> {
-                    int sLConLaiTrenKe = QLSP.getTrenKe() - chiTietPhieuNhap.getSoLuong();
-                    if(sLConLaiTrenKe > 0) {
-                        QLSP.setTrenKe(sLConLaiTrenKe);
-                    } else if(sLConLaiTrenKe == 0) {
-                        QLSP.setTrenKe(0);
-                    } else {
-                        QLSP.setTrenKe(0);
+    public ResponseEntity<ResponseObject> updateEffectByDeleteChiTietPN(List<ChiTietPhieuNhap> chiTietPhieuNhapList) {
+        List<QuanLySanPham> updatedQLSP = new ArrayList<>();
+        List<Long> boxId = new ArrayList<>();
 
-                        int sLConLaiTrongKho = QLSP.getTrongKho() + sLConLaiTrenKe;
-
-                        if (sLConLaiTrongKho > 0) {
-                            QLSP.setTrongKho(sLConLaiTrongKho);
-                        } else if (sLConLaiTrongKho == 0) {
-                            QLSP.setTrongKho(0);
+        for(ChiTietPhieuNhap chiTietPhieuNhap : chiTietPhieuNhapList) {
+            QuanLySanPham quanLySanPham = quanLySPRepository.findByMaSPAndMaCN(chiTietPhieuNhap.getSanPham(), chiTietPhieuNhap.getChiNhanh())
+                    .map(QLSP -> {
+                        int sLConLaiTrenKe = QLSP.getTrenKe() - chiTietPhieuNhap.getSoLuong();
+                        if(sLConLaiTrenKe > 0) {
+                            QLSP.setTrenKe(sLConLaiTrenKe);
+                        } else if(sLConLaiTrenKe == 0) {
+                            QLSP.setTrenKe(0);
                         } else {
-                            QLSP.setTrongKho(0);
+                            QLSP.setTrenKe(0);
 
-                            // Nhớ trừ cho Doanh Thu
+                            int sLConLaiTrongKho = QLSP.getTrongKho() + sLConLaiTrenKe;
+
+                            if (sLConLaiTrongKho > 0) {
+                                QLSP.setTrongKho(sLConLaiTrongKho);
+                            } else if (sLConLaiTrongKho == 0) {
+                                QLSP.setTrongKho(0);
+                            } else {
+                                // TrongKho is Negative
+                                boxId.add(QLSP.getId());
+                                return null;
+                            }
                         }
 
-                    }
+                        return QLSP;
+                    }).orElseGet(() -> {
+                        return null;
+                    });
 
-                    return quanLySPRepository.save(QLSP);
-                }).orElseGet(() -> {
-                    return null;
-                });
+            updatedQLSP.add(quanLySanPham);
+        }
+
+        for(QuanLySanPham item : updatedQLSP) {
+            if(item == null) {
+                return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
+                        new ResponseObject("failed", "There aren't enough quantity for QuanLySanPham with id = " + boxId.get(0), "")
+                );
+            }
+        }
+        quanLySPRepository.saveAll(updatedQLSP);
+        return null;
+    }
+
+    // Use for system
+    public ResponseEntity<ResponseObject> deleteQuantityQuanLySP(Long[] sanPhamId, Long chiNhanhId, ChiTietHoaDon[] chiTietHoaDonList) {
+        AtomicBoolean checkQuantity = new AtomicBoolean(false);
+
+//        ChiNhanh objCN = new ChiNhanh(chiNhanhId, null, null, null, null, null, null, null, null);
+        int indexCTHD = 0;
+        List<QuanLySanPham> boxQLSP = new ArrayList<>();
+        for(Long id : sanPhamId) {
+//            SanPham objSP = new SanPham(id, null, null, null, null, null, null, null, null);
+            Optional<QuanLySanPham> quanLySanPham = quanLySPRepository.findByMaSPIdAndMaCNId(id, chiNhanhId);
+
+            if(quanLySanPham.isPresent()) {
+                QuanLySanPham QLSP = quanLySanPham.get();
+
+                int sLConLaiTrenKe = QLSP.getTrenKe() - chiTietHoaDonList[indexCTHD].getSoLuong();
+                if(sLConLaiTrenKe > 0) {
+                    QLSP.setTrenKe(sLConLaiTrenKe);
+                } else if(sLConLaiTrenKe == 0) {
+                    QLSP.setTrenKe(0);
+                } else {
+                    QLSP.setTrenKe(0);
+
+                    int sLConLaiTrongKho = QLSP.getTrongKho() + sLConLaiTrenKe;
+
+                    if (sLConLaiTrongKho > 0) {
+                        QLSP.setTrongKho(sLConLaiTrongKho);
+                    } else if (sLConLaiTrongKho == 0) {
+                        QLSP.setTrongKho(0);
+                    } else {
+                        // trongKho is negative
+                        checkQuantity.set(true);
+                    }
+                }
+
+                boxQLSP.add(QLSP);
+            } else {
+                checkQuantity.set(true);
+            }
+
+            if(checkQuantity.get()) break;
+            indexCTHD++;
+        }
+        if(checkQuantity.get()) {
+            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
+                    new ResponseObject("failed", "There aren't enough quantity for SanPham with id = " + sanPhamId[indexCTHD], "")
+            );
+        }
+        quanLySPRepository.saveAll(boxQLSP);
+        return null;
     }
 }

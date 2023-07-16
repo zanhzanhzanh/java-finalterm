@@ -2,51 +2,42 @@ package vn.tdtu.finalterm.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "tbl_ChiTietPhieuNhap")
+@Table(name = "tbl_ChiTietHoaDon")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ChiTietPhieuNhap {
+public class ChiTietHoaDon {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @PositiveOrZero
-    @NotNull(message = "Please input giaNhap")
-    private float giaNhap;
-
-    @PositiveOrZero
-    @NotNull(message = "Please input soLuong")
+    private float giaBan;
     private int soLuong;
-
-    @PositiveOrZero
     private float tongTien;
-
-    @ManyToOne
-    @JoinColumn(name = "fk_sanPham")
-    private SanPham sanPham;
 
     @ManyToOne
     @JoinColumn(name = "fk_chiNhanh")
     private ChiNhanh chiNhanh;
 
     @ManyToOne
-    @JoinColumn(name = "fk_phieuNhap")
-    @JsonIgnoreProperties("chiTietPhieuNhapList")
-    private PhieuNhap phieuNhap;
+    @JoinColumn(name = "fk_sanPham")
+    private SanPham sanPham;
+
+    @ManyToOne
+    @JoinColumn(name = "fk_hoaDon")
+    @JsonIgnoreProperties("chiTietHoaDonList")
+    private HoaDon hoaDon;
 
     @PrePersist
     @PreUpdate
     private void calculateTongTien() {
-        this.tongTien = this.soLuong * this.giaNhap;
+        this.tongTien = this.soLuong * this.giaBan;
     }
 }
