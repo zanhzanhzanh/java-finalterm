@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import vn.tdtu.finalterm.models.ChiNhanh;
 import vn.tdtu.finalterm.models.QuanLySanPham;
 import vn.tdtu.finalterm.models.ResponseObject;
-import vn.tdtu.finalterm.models.SanPham;
 import vn.tdtu.finalterm.service.QuanLySPService;
 
 @RestController
