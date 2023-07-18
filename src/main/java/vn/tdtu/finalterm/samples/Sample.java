@@ -55,7 +55,7 @@ public class Sample {
                         .matKhau("1111");
                 ChiNhanh.ChiNhanhBuilder chiNhanhA = ChiNhanh.builder()
                         .id(1L)
-                        .tenChiNhanh("helloKitty")
+                        .tenChiNhanh("Fahasa - Lotte Quan 7")
                         .diaChi("Quan 7")
                         .taiKhoanFK(taiKhoanA.build());
                 taiKhoanA.chiNhanh(chiNhanhA.build());
@@ -65,12 +65,12 @@ public class Sample {
                 logger.info("insert: " + chiNhanhRepository.save(chiNhanhA.build()));
 
                 TaiKhoan.TaiKhoanBuilder taiKhoanB = TaiKhoan.builder()
-                        .taiKhoan("meomeo")
+                        .taiKhoan("hellokitty")
                         .matKhau("2222");
                 ChiNhanh.ChiNhanhBuilder chiNhanhB = ChiNhanh.builder()
                         .id(2L)
-                        .tenChiNhanh("helloKitty444")
-                        .diaChi("Quan 8")
+                        .tenChiNhanh("Fahasa - Aeon Binh Tan")
+                        .diaChi("Binh Tan")
                         .taiKhoanFK(taiKhoanB.build());
                 taiKhoanB.chiNhanh(chiNhanhB.build());
                 logger.info("insert: " + taiKhoanRepository.save(taiKhoanB.build()));
@@ -84,7 +84,7 @@ public class Sample {
 //                logger.info("insert: " + taiKhoanRepository.save(taiKhoan));
 //                logger.info("insert: " + chiNhanhRepository.save(chiNhanh));
 
-                List<ChiNhanh> box = chiNhanhRepository.findAll();
+//                List<ChiNhanh> box = chiNhanhRepository.findAll();
 
 //                logger.info("list Chi Nhanh: " + box);
 
@@ -132,55 +132,55 @@ public class Sample {
 //                logger.info("list Quan Ly San Pham: " + box2);
 
                 // PhieuNhap + ChiNhanh
-                PhieuNhap.PhieuNhapBuilder phieuNhapA = PhieuNhap.builder()
-                        .id(1L)
-                        .ngayNhap(new Date(2020 - 1900, 2, 3))
-                        .tongCong(2000.0f)
-                        .chiNhanh(chiNhanhRepository.getReferenceById(1L));
-
-                PhieuNhap.PhieuNhapBuilder phieuNhapB = PhieuNhap.builder()
-                        .id(2L)
-                        .ngayNhap(new Date(2023 - 1900, 1, 11))
-                        .tongCong(3000.0f)
-                        .chiNhanh(chiNhanhRepository.getReferenceById(1L));
-
-                PhieuNhap.PhieuNhapBuilder phieuNhapC = PhieuNhap.builder()
-                        .id(3L)
-                        .ngayNhap(new Date(2022 - 1900, 0, 4))
-                        .tongCong(4000.0f)
-                        .chiNhanh(chiNhanhRepository.getReferenceById(2L));
+//                PhieuNhap.PhieuNhapBuilder phieuNhapA = PhieuNhap.builder()
+//                        .id(1L)
+//                        .ngayNhap(new Date(2020 - 1900, 2, 3))
+//                        .tongCong(2000.0f)
+//                        .chiNhanh(chiNhanhRepository.getReferenceById(1L));
+//
+//                PhieuNhap.PhieuNhapBuilder phieuNhapB = PhieuNhap.builder()
+//                        .id(2L)
+//                        .ngayNhap(new Date(2023 - 1900, 1, 11))
+//                        .tongCong(3000.0f)
+//                        .chiNhanh(chiNhanhRepository.getReferenceById(1L));
+//
+//                PhieuNhap.PhieuNhapBuilder phieuNhapC = PhieuNhap.builder()
+//                        .id(3L)
+//                        .ngayNhap(new Date(2022 - 1900, 0, 4))
+//                        .tongCong(4000.0f)
+//                        .chiNhanh(chiNhanhRepository.getReferenceById(2L));
 
 //                logger.info("insert: " + phieuNhapRepository.save(phieuNhapA.build()));
 //                logger.info("insert: " + phieuNhapRepository.save(phieuNhapB.build()));
 //                logger.info("insert: " + phieuNhapRepository.save(phieuNhapC.build()));
 
                 // ChiTietPhieuNhap
-                ChiTietPhieuNhap.ChiTietPhieuNhapBuilder chiTietA = ChiTietPhieuNhap.builder()
-                        .id(1L)
-                        .giaNhap(3000.0f)
-                        .soLuong(11)
-                        .tongTien(0.0f)
-                        .sanPham(sanPhamRepository.getReferenceById(1L))
-                        .chiNhanh(chiNhanhRepository.getReferenceById(1L))
-                        .phieuNhap(phieuNhapRepository.getReferenceById(1L));
-
-                ChiTietPhieuNhap.ChiTietPhieuNhapBuilder chiTietA2 = ChiTietPhieuNhap.builder()
-                        .id(2L)
-                        .giaNhap(400.0f)
-                        .soLuong(100)
-                        .tongTien(0.0f)
-                        .sanPham(sanPhamRepository.getReferenceById(1L))
-                        .chiNhanh(chiNhanhRepository.getReferenceById(1L))
-                        .phieuNhap(phieuNhapRepository.getReferenceById(1L));
-
-                ChiTietPhieuNhap.ChiTietPhieuNhapBuilder chiTietB = ChiTietPhieuNhap.builder()
-                        .id(3L)
-                        .giaNhap(2000.0f)
-                        .soLuong(10)
-                        .tongTien(0.0f)
-                        .sanPham(sanPhamRepository.getReferenceById(2L))
-                        .chiNhanh(chiNhanhRepository.getReferenceById(1L))
-                        .phieuNhap(phieuNhapRepository.getReferenceById(1L));
+//                ChiTietPhieuNhap.ChiTietPhieuNhapBuilder chiTietA = ChiTietPhieuNhap.builder()
+//                        .id(1L)
+//                        .giaNhap(3000.0f)
+//                        .soLuong(11)
+//                        .tongTien(0.0f)
+//                        .sanPham(sanPhamRepository.getReferenceById(1L))
+//                        .chiNhanh(chiNhanhRepository.getReferenceById(1L))
+//                        .phieuNhap(phieuNhapRepository.getReferenceById(1L));
+//
+//                ChiTietPhieuNhap.ChiTietPhieuNhapBuilder chiTietA2 = ChiTietPhieuNhap.builder()
+//                        .id(2L)
+//                        .giaNhap(400.0f)
+//                        .soLuong(100)
+//                        .tongTien(0.0f)
+//                        .sanPham(sanPhamRepository.getReferenceById(1L))
+//                        .chiNhanh(chiNhanhRepository.getReferenceById(1L))
+//                        .phieuNhap(phieuNhapRepository.getReferenceById(1L));
+//
+//                ChiTietPhieuNhap.ChiTietPhieuNhapBuilder chiTietB = ChiTietPhieuNhap.builder()
+//                        .id(3L)
+//                        .giaNhap(2000.0f)
+//                        .soLuong(10)
+//                        .tongTien(0.0f)
+//                        .sanPham(sanPhamRepository.getReferenceById(2L))
+//                        .chiNhanh(chiNhanhRepository.getReferenceById(1L))
+//                        .phieuNhap(phieuNhapRepository.getReferenceById(1L));
 
 //                ChiTietPhieuNhap.ChiTietPhieuNhapBuilder chiTietC = ChiTietPhieuNhap.builder()
 //                        .id(1L)
