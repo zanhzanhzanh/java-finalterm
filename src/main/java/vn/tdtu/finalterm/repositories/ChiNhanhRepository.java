@@ -13,4 +13,8 @@ public interface ChiNhanhRepository extends JpaRepository<ChiNhanh, Long> {
     List<ChiNhanh> findByTenChiNhanh(String trim);
 
     Optional<ChiNhanh> findByTaiKhoanFK(TaiKhoan taiKhoan);
+
+    List<ChiNhanh> findByTenChiNhanhContainsOrDiaChiContains(String tenChiNhanh, String diaChi);
+
+    List<ChiNhanh> findByTenChiNhanhContains(String key);
 }

@@ -27,6 +27,16 @@ public class ChiNhanhController {
         return chiNhanhService.findChiNhanhById(id);
     }
 
+    @GetMapping("/chiNhanhQuery/{key}") // Find Request
+    public ResponseEntity<ResponseObject> findCNByTenOrDiaChi(@PathVariable("key") String key) {
+        return chiNhanhService.findCNByTenOrDiaChi(key);
+    }
+
+    @GetMapping("/chiNhanhQuery2/{key}") // Find Request
+    public ResponseEntity<ResponseObject> findCNByTen(@PathVariable("key") String key) {
+        return chiNhanhService.findCNByTen(key);
+    }
+
     @PostMapping("/chiNhanh")
     public ResponseEntity<ResponseObject> insertChiNhanh(@Valid @RequestBody ChiNhanh chiNhanh) {
         return chiNhanhService.insertChiNhanh(chiNhanh);

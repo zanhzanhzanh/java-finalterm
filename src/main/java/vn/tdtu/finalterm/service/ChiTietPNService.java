@@ -44,6 +44,18 @@ public class ChiTietPNService {
         );
     }
 
+    public ResponseEntity<ResponseObject> findAllChiTietPNBySanPhamId(Long sanPhamId) {
+        Optional<SanPham> sanPham = sanPhamRepository.findById(sanPhamId);
+
+        if(!sanPham.isPresent()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                new ResponseObject("ok", "Can't find SanPham with id = " + sanPhamId, "")
+        );
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("ok", "Query All PhieuNhap By SanPhamId Success", chiTietPNRepository.findAllBySanPham(sanPham))
+        );
+    }
+
     public ResponseEntity<ResponseObject> findAllChiTietPNByCNIdAndSPId(Long chiNhanhId, Long sanPhamId) {
         Optional<ChiNhanh> chiNhanh = chiNhanhRepository.findById(chiNhanhId);
         Optional<SanPham> sanPham = sanPhamRepository.findById(sanPhamId);

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import vn.tdtu.finalterm.models.ChiNhanh;
 import vn.tdtu.finalterm.models.ResponseObject;
 import vn.tdtu.finalterm.models.SanPham;
 import vn.tdtu.finalterm.repositories.SanPhamRepository;
@@ -88,6 +89,14 @@ public class SanPhamService {
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                 new ResponseObject("failed", "Cannot find SanPham to delete", "")
+        );
+    }
+
+    public ResponseEntity<ResponseObject> findSPByTenOrLoaiOrTHOrTGOrTL(String key) {
+        List<SanPham> foundSP = sanPhamRepository.findByTenSanPhamContainsOrLoaiSanPhamContainsOrThuongHieuContainsOrTacGiaContainsOrTheLoaiContains(key, key, key, key, key);
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("ok", "Query SanPham Success", foundSP)
         );
     }
 }

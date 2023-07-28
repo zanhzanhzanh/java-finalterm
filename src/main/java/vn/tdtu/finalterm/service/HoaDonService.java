@@ -41,6 +41,18 @@ public class HoaDonService {
         );
     }
 
+    public ResponseEntity<ResponseObject> findHDByTenChiNhanh(String key) {
+        List<ChiNhanh> chiNhanhList = chiNhanhRepository.findByTenChiNhanhContains(key);
+
+        if(chiNhanhList.size() <= 0) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                new ResponseObject("failed", "Cannot find ChiNhanh with tenChiNhanh like " + key, "")
+        );
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("ok", "Query All HoaDon Success", hoaDonRepository.findAllByChiNhanhIn(chiNhanhList))
+        );
+    }
+
     public ResponseEntity<ResponseObject> updateHoaDon(HoaDon newHoaDon, Long id) {
         Optional<HoaDon> foundHD = hoaDonRepository.findById(id);
 

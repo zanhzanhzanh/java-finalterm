@@ -30,6 +30,26 @@ public class QuanLySPController {
         return quanLySPService.findAllQuanLySPByChiNhanhId(chiNhanhId);
     }
 
+    @GetMapping("/quanLySPBySP/{id}") // Custom Router
+    public ResponseEntity<ResponseObject> findAllQuanLySPBySanPhamId(@PathVariable("id") Long sanPhamId) {
+        return quanLySPService.findAllQuanLySPBySanPhamId(sanPhamId);
+    }
+
+    @GetMapping("/quanLySP/{chiNhanhId}/{sanPhamId}") // Custom Router
+    public ResponseEntity<ResponseObject> findAllQLSPByCNIdAndSPId(@PathVariable("chiNhanhId") Long chiNhanhId, @PathVariable("sanPhamId") Long sanPhamId) {
+        return quanLySPService.findAllQLSPByCNIdAndSPId(chiNhanhId, sanPhamId);
+    }
+
+    @GetMapping("/quanLySPQuery/{key}") // Find Request
+    public ResponseEntity<ResponseObject> findQuanLySPByTenCN(@PathVariable("key") String key) {
+        return quanLySPService.findQuanLySPByTenCN(key);
+    }
+
+    @GetMapping("/quanLySPQuery/expired") // Find Request
+    public ResponseEntity<ResponseObject> findQLSPThatExpired() {
+        return quanLySPService.findQLSPThatExpired();
+    }
+
     @PutMapping("/quanLySP/{id}")
     public ResponseEntity<ResponseObject> updateQuanLySP(@RequestBody QuanLySanPham quanLySanPham, @PathVariable("id") Long quanLySPId) {
         return quanLySPService.updateQuanLySP(quanLySanPham, quanLySPId);

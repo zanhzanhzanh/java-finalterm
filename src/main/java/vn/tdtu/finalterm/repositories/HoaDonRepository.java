@@ -11,4 +11,6 @@ import java.util.Optional;
 @Repository
 public interface HoaDonRepository extends JpaRepository<HoaDon, Long> {
     List<HoaDon> findAllByChiNhanh(Optional<ChiNhanh> chiNhanh);
+
+    List<HoaDon> findAllByChiNhanhIn(List<ChiNhanh> chiNhanhList);
 }

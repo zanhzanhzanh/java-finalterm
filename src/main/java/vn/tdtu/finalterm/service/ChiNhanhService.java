@@ -127,4 +127,20 @@ public class ChiNhanhService {
                         new ResponseObject("failed", "Cannot find ChiNhanh with taiKhoan = " + taiKhoan.getTaiKhoan(), "")
                 );
     }
+
+    public ResponseEntity<ResponseObject> findCNByTenOrDiaChi(String key) {
+        List<ChiNhanh> foundCN = chiNhanhRepository.findByTenChiNhanhContainsOrDiaChiContains(key, key);
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                        new ResponseObject("ok", "Query ChiNhanh Success", foundCN)
+        );
+    }
+
+    public ResponseEntity<ResponseObject> findCNByTen(String key) {
+        List<ChiNhanh> foundCN = chiNhanhRepository.findByTenChiNhanhContains(key);
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("ok", "Query ChiNhanh Success", foundCN)
+        );
+    }
 }

@@ -25,6 +25,11 @@ public class HoaDonController {
         return hoaDonService.findAllHDByChiNhanhId(chiNhanhId);
     }
 
+    @GetMapping("/hoaDonQuery/{key}") // Find Request
+    public ResponseEntity<ResponseObject> findHDByTenChiNhanh(@PathVariable("key") String key) {
+        return hoaDonService.findHDByTenChiNhanh(key);
+    }
+
     @PutMapping("/hoaDon/{id}")
     public ResponseEntity<ResponseObject> updateHoaDon(@Valid @RequestBody HoaDon hoaDon, @PathVariable("id") Long id) {
         return hoaDonService.updateHoaDon(hoaDon, id);

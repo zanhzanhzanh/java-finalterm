@@ -26,6 +26,11 @@ public class SanPhamController {
         return sanPhamService.findSanPhamById(id);
     }
 
+    @GetMapping("/sanPhamQuery/{key}") // Find Request
+    public ResponseEntity<ResponseObject> findSPByTenOrLoaiOrTHOrTGOrTL(@PathVariable("key") String key) {
+        return sanPhamService.findSPByTenOrLoaiOrTHOrTGOrTL(key);
+    }
+
     @PostMapping("/sanPham")
     public ResponseEntity<ResponseObject> insertSanPham(@Valid @RequestBody SanPham sanPham) {
         return sanPhamService.insertSanPham(sanPham);

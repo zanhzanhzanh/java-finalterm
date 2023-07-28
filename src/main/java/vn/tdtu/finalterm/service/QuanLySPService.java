@@ -8,6 +8,7 @@ import vn.tdtu.finalterm.enums.DefaultValues;
 import vn.tdtu.finalterm.models.*;
 import vn.tdtu.finalterm.repositories.ChiNhanhRepository;
 import vn.tdtu.finalterm.repositories.QuanLySPRepository;
+import vn.tdtu.finalterm.repositories.SanPhamRepository;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -22,12 +23,14 @@ public class QuanLySPService {
     QuanLySPRepository quanLySPRepository;
     @Autowired
     ChiNhanhRepository chiNhanhRepository;
+    @Autowired
+    SanPhamRepository sanPhamRepository;
 
     public ResponseEntity<ResponseObject> findAllQuanLySP() {
         updateAllTrangThai();
 
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("ok", "Query All QuanLy Success", quanLySPRepository.findAll())
+                new ResponseObject("ok", "Query All QuanLySanPham Success", quanLySPRepository.findAll())
         );
     }
 
@@ -35,7 +38,7 @@ public class QuanLySPService {
         updateAllTrangThai();
 
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("ok", "Query All QuanLy By ChiNhanh Success", quanLySPRepository.findAllByMaCN(chiNhanh))
+                new ResponseObject("ok", "Query All QuanLySanPham By ChiNhanh Success", quanLySPRepository.findAllByMaCN(chiNhanh))
         );
     }
 
@@ -49,7 +52,60 @@ public class QuanLySPService {
         );
 
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("ok", "Query All QuanLy By ChiNhanh Success", quanLySPRepository.findAllByMaCN(chiNhanh.get()))
+                new ResponseObject("ok", "Query All QuanLySanPham By ChiNhanh Success", quanLySPRepository.findAllByMaCN(chiNhanh.get()))
+        );
+    }
+
+    public ResponseEntity<ResponseObject> findAllQuanLySPBySanPhamId(Long sanPhamId) {
+        updateAllTrangThai();
+
+        Optional<SanPham> sanPham = sanPhamRepository.findById(sanPhamId);
+
+        if(!sanPham.isPresent()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                new ResponseObject("failed", "Cannot find SanPham with id = " + sanPhamId, "")
+        );
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("ok", "Query All QuanLySanPham By SanPham Success", quanLySPRepository.findAllByMaSP(sanPham.get()))
+        );
+    }
+
+    public ResponseEntity<ResponseObject> findAllQLSPByCNIdAndSPId(Long chiNhanhId, Long sanPhamId) {
+        Optional<ChiNhanh> chiNhanh = chiNhanhRepository.findById(chiNhanhId);
+        Optional<SanPham> sanPham = sanPhamRepository.findById(sanPhamId);
+
+        if(!chiNhanh.isPresent()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                new ResponseObject("failed", "Can't find ChiNhanh with id = " + chiNhanhId, "")
+        );
+        if(!sanPham.isPresent()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                new ResponseObject("failed", "Can't find SanPham with id = " + sanPhamId, "")
+        );
+
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("ok", "Query All QuanLySanPham By ChiNhanh And SanPham Success", quanLySPRepository.findAllByMaCNAndMaSP(chiNhanh, sanPham))
+        );
+    }
+
+    public ResponseEntity<ResponseObject> findQuanLySPByTenCN(String name) {
+        updateAllTrangThai();
+
+        List<ChiNhanh> chiNhanh = chiNhanhRepository.findByTenChiNhanhContains(name);
+
+        if(chiNhanh.size() <= 0) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                new ResponseObject("failed", "Cannot find ChiNhanh with tenChiNhanh like " + name, "")
+        );
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("ok", "Query All QuanLySanPham Success", quanLySPRepository.findAllByMaCNIn(chiNhanh))
+        );
+    }
+
+    public ResponseEntity<ResponseObject> findQLSPThatExpired() {
+        updateAllTrangThai();
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("ok", "Query QuanLySanPham Success", quanLySPRepository.findAllByTrangThai(0))
         );
     }
 

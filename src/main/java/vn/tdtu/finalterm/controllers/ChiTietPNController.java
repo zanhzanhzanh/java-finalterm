@@ -24,6 +24,11 @@ public class ChiTietPNController {
         return chiTietPNService.findAllChiTietPNByChiNhanhId(chiNhanhId);
     }
 
+    @GetMapping("/chiTietPNBySanPham/{id}") // Custom Router
+    public ResponseEntity<ResponseObject> findAllChiTietPNBySanPhamId(@PathVariable("id") Long sanPhamId) {
+        return chiTietPNService.findAllChiTietPNBySanPhamId(sanPhamId);
+    }
+
     @GetMapping("/chiTietPN/{chiNhanhId}/{sanPhamId}") // Custom Router
     public ResponseEntity<ResponseObject> findAllChiTietPNByCNIdAndSPId(@PathVariable("chiNhanhId") Long chiNhanhId, @PathVariable("sanPhamId") Long sanPhamId) {
         return chiTietPNService.findAllChiTietPNByCNIdAndSPId(chiNhanhId, sanPhamId);

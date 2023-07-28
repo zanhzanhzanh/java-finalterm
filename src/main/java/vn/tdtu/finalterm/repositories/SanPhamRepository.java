@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface SanPhamRepository extends JpaRepository<SanPham, Long> {
     List<SanPham> findByTenSanPham(String trim);
+
+    List<SanPham> findByTenSanPhamContainsOrLoaiSanPhamContainsOrThuongHieuContainsOrTacGiaContainsOrTheLoaiContains(String tenSanPham, String loaiSanPham, String thuongHieu, String tacGia, String theLoai);
 }

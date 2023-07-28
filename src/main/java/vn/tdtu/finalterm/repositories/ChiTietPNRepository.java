@@ -14,6 +14,8 @@ import java.util.Optional;
 public interface ChiTietPNRepository extends JpaRepository<ChiTietPhieuNhap, Long> {
     List<ChiTietPhieuNhap> findAllByChiNhanh(Optional<ChiNhanh> chiNhanh);
 
+    List<ChiTietPhieuNhap> findAllBySanPham(Optional<SanPham> sanPham);
+
     List<ChiTietPhieuNhap> findAllByChiNhanhAndSanPham(Optional<ChiNhanh> chiNhanh, Optional<SanPham> sanPham);
 
     List<ChiTietPhieuNhap> findAllByPhieuNhap(Optional<PhieuNhap> foundPN);
