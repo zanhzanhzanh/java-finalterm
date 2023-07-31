@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResponseObject {
+public class ResponseObject<M> {
     private String status;
     private String message;
-    private Object data;
+    private M data;
 }
