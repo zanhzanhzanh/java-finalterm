@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
+import lombok.experimental.Accessors;
 
 import java.sql.Date;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Accessors(chain = true)
 @ToString(exclude = "chiTietHoaDonList")
 public class HoaDon {
     @Id
