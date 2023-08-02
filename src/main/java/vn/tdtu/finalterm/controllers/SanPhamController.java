@@ -17,7 +17,7 @@ public class SanPhamController {
     SanPhamService sanPhamService;
 
     @GetMapping("/sanPham")
-    public List<SanPham> findAllSanPham() {
+    public ResponseEntity<ResponseObject> findAllSanPham() {
         return sanPhamService.findAllSanPham();
     }
 
