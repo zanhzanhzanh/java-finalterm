@@ -17,8 +17,10 @@ public class SanPhamService {
     @Autowired
     private SanPhamRepository sanPhamRepository;
 
-    public List<SanPham> findAllSanPham() {
-        return sanPhamRepository.findAll();
+    public ResponseEntity<ResponseObject> findAllSanPham() {
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("ok", "Query All SanPham Success", sanPhamRepository.findAll())
+        );
     }
 
     public ResponseEntity<ResponseObject> findSanPhamById(Long sanPhamId) {
