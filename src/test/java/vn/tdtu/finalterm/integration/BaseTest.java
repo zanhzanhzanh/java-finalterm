@@ -36,8 +36,8 @@ public abstract class BaseTest<M> {
   List<M> listData;
   HttpEntity<M> requestEntity;
   ResponseEntity<ResponseObject<M>> responseEntity;
-  ResponseEntity<List<M>> responseListEntity;
-  Class<List<M>> responseListType = (Class<List<M>>) (Class<?>) List.class;
+  ResponseEntity<ResponseObject<List<M>>> responseListEntity;
+  Class<ResponseObject<List<M>>> responseListType = (Class<ResponseObject<List<M>>>) (Class<?>) ResponseObject.class;
   Class<ResponseObject<M>> responseType = (Class<ResponseObject<M>>) (Class<?>) ResponseObject.class;
   Long id;
 

@@ -75,25 +75,25 @@ public class ChiNhanhTest extends BaseTest<ChiNhanh> {
     assertEquals("diaChi", data.getDiaChi());
   }
 
-//  @Test
-//  @Order(4)
-//  public void testGetlist() throws Exception {
-//    requestEntity = new HttpEntity<>(null, headers);
-//    responseListEntity =
-//      restTemplate.exchange(
-//        createURLWithPort(apiUrl),
-//        HttpMethod.GET,
-//        requestEntity,
-//        responseListType);
-//
-//    assertEquals(200, responseListEntity.getStatusCode().value());
-//
-//    listData = mapper.convertValue(responseListEntity.getBody(), new TypeReference<List<ChiNhanh>>() {});
-//
-//    assertThat(listData)
-//      .extracting(ChiNhanh::getId, ChiNhanh::getTenChiNhanh)
-//      .containsOnlyOnce(tuple(id, "updated"));
-//  }
+  @Test
+  @Order(4)
+  public void testGetlist() throws Exception {
+    requestEntity = new HttpEntity<>(null, headers);
+    responseListEntity =
+      restTemplate.exchange(
+        createURLWithPort(apiUrl),
+        HttpMethod.GET,
+        requestEntity,
+        responseListType);
+
+    assertEquals(200, responseListEntity.getStatusCode().value());
+
+    listData = mapper.convertValue(responseListEntity.getBody().getData(), new TypeReference<List<ChiNhanh>>() {});
+
+    assertThat(listData)
+      .extracting(ChiNhanh::getId, ChiNhanh::getTenChiNhanh)
+      .containsOnlyOnce(tuple(id, "updated"));
+  }
 
   @Test
   @Order(5)
