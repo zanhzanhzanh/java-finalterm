@@ -30,6 +30,11 @@ public class HoaDonController {
         return hoaDonService.findHDByTenChiNhanh(key);
     }
 
+    @PostMapping("/hoaDonQuery") // Custom Router
+    public ResponseEntity<ResponseObject> findAllHDByNgayLap(@RequestBody HoaDon hoaDon) {
+        return hoaDonService.findHDByNgayLap(hoaDon);
+    }
+
     @PutMapping("/hoaDon/{id}")
     public ResponseEntity<ResponseObject> updateHoaDon(@Valid @RequestBody HoaDon hoaDon, @PathVariable("id") Long id) {
         return hoaDonService.updateHoaDon(hoaDon, id);

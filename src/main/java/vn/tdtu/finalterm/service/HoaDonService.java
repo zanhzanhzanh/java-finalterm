@@ -53,6 +53,14 @@ public class HoaDonService {
         );
     }
 
+    public ResponseEntity<ResponseObject> findHDByNgayLap(HoaDon hoaDon) {
+        List<HoaDon> hoaDons = hoaDonRepository.findByNgayLap(hoaDon.getNgayLap());
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("ok", "Query All HoaDon By NgayLap Success", hoaDons)
+        );
+    }
+
     public ResponseEntity<ResponseObject> updateHoaDon(HoaDon newHoaDon, Long id) {
         Optional<HoaDon> foundHD = hoaDonRepository.findById(id);
 

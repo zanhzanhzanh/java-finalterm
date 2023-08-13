@@ -8,6 +8,8 @@ import vn.tdtu.finalterm.models.PhieuNhap;
 import vn.tdtu.finalterm.models.ResponseObject;
 import vn.tdtu.finalterm.service.PhieuNhapService;
 
+import java.sql.Date;
+
 @RestController
 @RequestMapping(path = "")
 public class PhieuNhapController {
@@ -22,6 +24,11 @@ public class PhieuNhapController {
     @GetMapping("/phieuNhap/{chiNhanhId}") // Custom Router
     public ResponseEntity<ResponseObject> findAllPNByChiNhanhId(@PathVariable("chiNhanhId") Long chiNhanhId) {
         return phieuNhapService.findAllPNByChiNhanhId(chiNhanhId);
+    }
+
+    @PostMapping("/phieuNhapQuery") // Custom Router
+    public ResponseEntity<ResponseObject> findAllPNByNgayNhap(@RequestBody PhieuNhap phieuNhap) {
+        return phieuNhapService.findAllPNByNgayNhap(phieuNhap);
     }
 
     @PutMapping("/phieuNhap/{id}")

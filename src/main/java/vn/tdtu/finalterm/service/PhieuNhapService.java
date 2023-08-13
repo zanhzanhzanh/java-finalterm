@@ -9,6 +9,7 @@ import vn.tdtu.finalterm.repositories.ChiNhanhRepository;
 import vn.tdtu.finalterm.repositories.ChiTietPNRepository;
 import vn.tdtu.finalterm.repositories.PhieuNhapRepository;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,6 +39,14 @@ public class PhieuNhapService {
 
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("ok", "Query All PhieuNhap By ChiNhanhId Success", phieuNhapRepository.findAllByChiNhanh(chiNhanh))
+        );
+    }
+
+    public ResponseEntity<ResponseObject> findAllPNByNgayNhap(PhieuNhap phieuNhap) {
+        List<PhieuNhap> phieuNhaps = phieuNhapRepository.findByNgayNhap(phieuNhap.getNgayNhap());
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("ok", "Query All PhieuNhap By NgayNhap Success", phieuNhaps)
         );
     }
 
