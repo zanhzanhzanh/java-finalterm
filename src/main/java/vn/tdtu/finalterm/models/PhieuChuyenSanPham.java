@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
+import lombok.experimental.Accessors;
 
 import java.sql.Date;
 
@@ -13,6 +14,7 @@ import java.sql.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Accessors(chain = true)
 public class PhieuChuyenSanPham {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
