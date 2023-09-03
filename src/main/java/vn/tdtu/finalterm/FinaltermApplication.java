@@ -14,9 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 		)
 )
 public class FinaltermApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(FinaltermApplication.class, args);
 	}
-
 }

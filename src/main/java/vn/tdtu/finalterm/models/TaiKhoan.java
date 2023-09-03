@@ -22,6 +22,8 @@ public class TaiKhoan {
     @NotBlank(message = "Please input matKhau")
     private String matKhau;
 
+    private boolean enabled = false;
+
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "taiKhoanFK")
     @JsonIgnore
     private ChiNhanh chiNhanh;

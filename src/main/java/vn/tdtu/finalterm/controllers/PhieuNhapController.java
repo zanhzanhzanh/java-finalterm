@@ -8,8 +8,6 @@ import vn.tdtu.finalterm.models.PhieuNhap;
 import vn.tdtu.finalterm.models.ResponseObject;
 import vn.tdtu.finalterm.service.PhieuNhapService;
 
-import java.sql.Date;
-
 @RestController
 @RequestMapping(path = "")
 public class PhieuNhapController {

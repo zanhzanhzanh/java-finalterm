@@ -1,5 +1,6 @@
 package vn.tdtu.finalterm.controllers;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -38,8 +39,8 @@ public class ChiNhanhController {
     }
 
     @PostMapping("/chiNhanh")
-    public ResponseEntity<ResponseObject> insertChiNhanh(@Valid @RequestBody ChiNhanh chiNhanh) {
-        return chiNhanhService.insertChiNhanh(chiNhanh);
+    public ResponseEntity<ResponseObject> insertChiNhanh(@Valid @RequestBody ChiNhanh chiNhanh, final HttpServletRequest request) {
+        return chiNhanhService.insertChiNhanh(chiNhanh, request);
     }
 
     @PostMapping("/chiNhanhByTK") // Custom Router

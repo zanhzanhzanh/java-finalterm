@@ -9,7 +9,6 @@ import vn.tdtu.finalterm.repositories.ChiNhanhRepository;
 import vn.tdtu.finalterm.repositories.ChiTietPNRepository;
 import vn.tdtu.finalterm.repositories.PhieuNhapRepository;
 
-import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
