@@ -3,6 +3,7 @@ package vn.tdtu.finalterm.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import lombok.experimental.Accessors;
@@ -27,6 +28,9 @@ public class ChiNhanh {
 
     @NotBlank(message = "Please input diaChi")
     private String diaChi;
+
+    @NotBlank(message = "Please input email")
+    private String email;
 
     @OneToOne
     @JoinColumn(name = "fk_taiKhoan")

@@ -2,9 +2,11 @@ package vn.tdtu.finalterm.samples;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import vn.tdtu.finalterm.models.*;
 import vn.tdtu.finalterm.repositories.*;
 
@@ -13,6 +15,9 @@ import java.util.List;
 
 @Configuration
 public class Sample {
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     // logger
     private static final Logger logger = LoggerFactory.getLogger(Sample.class);
 
@@ -51,12 +56,14 @@ public class Sample {
 
                 // ChiNhanh + TaiKhoan
                 TaiKhoan.TaiKhoanBuilder taiKhoanA = TaiKhoan.builder()
-                        .taiKhoan("user1")
-                        .matKhau("1111");
+                        .taiKhoan("this.is.manager.fahasa@gmail.com")
+                        .matKhau(passwordEncoder.encode("123"))
+                        .enabled(true);
                 ChiNhanh.ChiNhanhBuilder chiNhanhA = ChiNhanh.builder()
                         .id(1L)
-                        .tenChiNhanh("Fahasa - Lotte Quan 7")
+                        .tenChiNhanh("Fahasa - Admin")
                         .diaChi("Quan 7")
+                        .email("this.is.manager.fahasa@gmail.com")
                         .taiKhoanFK(taiKhoanA.build());
                 taiKhoanA.chiNhanh(chiNhanhA.build());
 //                TaiKhoan taiKhoanP = taiKhoanA.build();
@@ -65,12 +72,14 @@ public class Sample {
                 logger.info("insert: " + chiNhanhRepository.save(chiNhanhA.build()));
 
                 TaiKhoan.TaiKhoanBuilder taiKhoanB = TaiKhoan.builder()
-                        .taiKhoan("hellokitty")
-                        .matKhau("2222");
+                        .taiKhoan("hellokitty@gmail.com")
+                        .matKhau(passwordEncoder.encode("123"))
+                        .enabled(true);
                 ChiNhanh.ChiNhanhBuilder chiNhanhB = ChiNhanh.builder()
                         .id(2L)
                         .tenChiNhanh("Fahasa - Aeon Binh Tan")
                         .diaChi("Binh Tan")
+                        .email("aeonBinhTan@gmail.com")
                         .taiKhoanFK(taiKhoanB.build());
                 taiKhoanB.chiNhanh(chiNhanhB.build());
                 logger.info("insert: " + taiKhoanRepository.save(taiKhoanB.build()));

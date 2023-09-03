@@ -24,6 +24,11 @@ public class PhieuNhapController {
         return phieuNhapService.findAllPNByChiNhanhId(chiNhanhId);
     }
 
+    @PostMapping("/phieuNhapQuery") // Custom Router
+    public ResponseEntity<ResponseObject> findAllPNByNgayNhap(@RequestBody PhieuNhap phieuNhap) {
+        return phieuNhapService.findAllPNByNgayNhap(phieuNhap);
+    }
+
     @PutMapping("/phieuNhap/{id}")
     public ResponseEntity<ResponseObject> updatePhieuNhap(@Valid @RequestBody PhieuNhap phieuNhap, @PathVariable("id") Long id) {
         return phieuNhapService.updatePhieuNhap(phieuNhap, id);

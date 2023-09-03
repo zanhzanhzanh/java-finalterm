@@ -12,6 +12,8 @@ import java.util.Optional;
 public interface ChiNhanhRepository extends JpaRepository<ChiNhanh, Long> {
     List<ChiNhanh> findByTenChiNhanh(String trim);
 
+    List<ChiNhanh> findByEmail(String trim);
+
     Optional<ChiNhanh> findByTaiKhoanFK(TaiKhoan taiKhoan);
 
     List<ChiNhanh> findByTenChiNhanhContainsOrDiaChiContains(String tenChiNhanh, String diaChi);

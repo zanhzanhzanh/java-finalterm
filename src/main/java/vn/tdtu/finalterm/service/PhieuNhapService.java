@@ -41,6 +41,14 @@ public class PhieuNhapService {
         );
     }
 
+    public ResponseEntity<ResponseObject> findAllPNByNgayNhap(PhieuNhap phieuNhap) {
+        List<PhieuNhap> phieuNhaps = phieuNhapRepository.findByNgayNhap(phieuNhap.getNgayNhap());
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("ok", "Query All PhieuNhap By NgayNhap Success", phieuNhaps)
+        );
+    }
+
     public ResponseEntity<ResponseObject> updatePhieuNhap(PhieuNhap newPhieuNhap, Long id) {
         Optional<PhieuNhap> foundPN = phieuNhapRepository.findById(id);
 

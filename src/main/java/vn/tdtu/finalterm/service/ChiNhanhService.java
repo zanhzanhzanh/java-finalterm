@@ -1,9 +1,14 @@
 package vn.tdtu.finalterm.service;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import vn.tdtu.finalterm.event.AccountSessionScope;
+import vn.tdtu.finalterm.event.RegistrationCompleteEvent;
 import vn.tdtu.finalterm.models.ChiNhanh;
 import vn.tdtu.finalterm.models.ResponseObject;
 import vn.tdtu.finalterm.models.TaiKhoan;
@@ -13,6 +18,7 @@ import vn.tdtu.finalterm.repositories.TaiKhoanRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 @Service
 public class ChiNhanhService {
@@ -20,6 +26,12 @@ public class ChiNhanhService {
     private ChiNhanhRepository chiNhanhRepository;
     @Autowired
     private TaiKhoanRepository taiKhoanRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private ApplicationEventPublisher publisher;
+    @Autowired
+    private AccountSessionScope accountSessionScope;
 
     public ResponseEntity<ResponseObject> findAllChiNhanh() {
         return ResponseEntity.status(HttpStatus.OK).body(
@@ -39,9 +51,8 @@ public class ChiNhanhService {
                 );
     }
 
-    public ResponseEntity<ResponseObject> insertChiNhanh(ChiNhanh chiNhanh) {
+    public ResponseEntity<ResponseObject> insertChiNhanh(ChiNhanh chiNhanh, HttpServletRequest request) {
         List<ChiNhanh> foundChiNhanh = chiNhanhRepository.findByTenChiNhanh(chiNhanh.getTenChiNhanh().trim());
-
         // If the same name
         if(foundChiNhanh.size() > 0) {
             return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
@@ -49,16 +60,51 @@ public class ChiNhanhService {
             );
         }
 
+        List<ChiNhanh> foundChiNhanhByEmail = chiNhanhRepository.findByEmail(chiNhanh.getEmail().trim());
+        // If the same email
+        if(foundChiNhanhByEmail.size() > 0) {
+            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
+                    new ResponseObject("failed", "Email already taken", "")
+            );
+        }
+
+        // Check Regex Email
+        if(!Pattern.compile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$").matcher(chiNhanh.getEmail()).matches()) {
+            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
+                    new ResponseObject("failed", "Please enter the correct email structure", "")
+            );
+        }
+
         // Save first to take Id
         ChiNhanh res = chiNhanhRepository.save(chiNhanh);
 
+        String passwordPrimitive = Integer.toString(new Random().nextInt(90000) + 10000);
         // Create new Account
-        TaiKhoan taiKhoan = new TaiKhoan("user" + Long.toString(res.getId()),Integer.toString(new Random().nextInt(90000) + 10000),null);
+        TaiKhoan taiKhoan = new TaiKhoan(res.getEmail(),
+                passwordEncoder.encode(passwordPrimitive),
+                false,
+                null);
         // Push to TaiKhoan Database
         taiKhoanRepository.save(taiKhoan);
 
         // Map to this ChiNhanh
         res.setTaiKhoanFK(taiKhoan);
+
+        // Save to session
+        accountSessionScope.setTaiKhoan(new TaiKhoan(res.getEmail(),
+                passwordPrimitive,
+                false,
+                null));
+
+        // Asynchronous activation (Send mail)
+        publisher.publishEvent(new RegistrationCompleteEvent(
+                taiKhoan,
+                passwordPrimitive,
+                "http://"
+                        + request.getServerName() + ":"
+                        + request.getServerPort()
+                        + request.getContextPath()
+        ));
 
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("ok", "Insert ChiNhanh and TaiKhoan Success", chiNhanhRepository.save(res))
@@ -68,7 +114,7 @@ public class ChiNhanhService {
     public ResponseEntity<ResponseObject> updateChiNhanh(ChiNhanh newChiNhanh, Long id) {
         List<ChiNhanh> foundChiNhanh = chiNhanhRepository.findByTenChiNhanh(newChiNhanh.getTenChiNhanh().trim());
         if(foundChiNhanh.size() > 0) {
-            // Trường hợp update nhưng tên chi nhánh trùng thì chỉ cho thay đổi field khi khác id
+            // Trường hợp update nhưng tên chi nhánh trùng thì chỉ cho thay đổi field khi trùng id
             if(foundChiNhanh.get(0).getId() != id) {
                 return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
                         new ResponseObject("failed", "tenChiNhanh already taken", "")

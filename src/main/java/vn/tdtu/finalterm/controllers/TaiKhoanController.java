@@ -1,11 +1,11 @@
 package vn.tdtu.finalterm.controllers;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.tdtu.finalterm.models.ResponseObject;
-import vn.tdtu.finalterm.models.SanPham;
 import vn.tdtu.finalterm.models.TaiKhoan;
 import vn.tdtu.finalterm.service.TaiKhoanService;
 
@@ -21,7 +21,17 @@ public class TaiKhoanController {
     }
 
     @PutMapping("/taiKhoan") // Custom Router
-    public ResponseEntity<ResponseObject> doiMatKhau(@Valid @RequestBody TaiKhoan taiKhoan) {
-        return taiKhoanService.doiMatKhau(taiKhoan);
+    public ResponseEntity<ResponseObject> doiMatKhau(@RequestBody TaiKhoan taiKhoan, final HttpServletRequest request) {
+        return taiKhoanService.doiMatKhau(taiKhoan, request);
+    }
+
+    @GetMapping("/verifyRegistration")
+    public ResponseEntity<ResponseObject> verifyRegistration(@RequestParam("token") String token) {
+        return taiKhoanService.verifyRegistration(token);
+    }
+
+    @GetMapping("/resendToken")
+    public ResponseEntity<ResponseObject> resendToken(final HttpServletRequest request) {
+        return taiKhoanService.resendVerificationToken(request);
     }
 }
