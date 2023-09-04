@@ -71,19 +71,19 @@ public class Sample {
                 logger.info("insert: " + taiKhoanRepository.save(taiKhoanA.build()));
                 logger.info("insert: " + chiNhanhRepository.save(chiNhanhA.build()));
 
-                TaiKhoan.TaiKhoanBuilder taiKhoanB = TaiKhoan.builder()
-                        .taiKhoan("hellokitty@gmail.com")
-                        .matKhau(passwordEncoder.encode("123"))
-                        .enabled(true);
-                ChiNhanh.ChiNhanhBuilder chiNhanhB = ChiNhanh.builder()
-                        .id(2L)
-                        .tenChiNhanh("Fahasa - Aeon Binh Tan")
-                        .diaChi("Binh Tan")
-                        .email("aeonBinhTan@gmail.com")
-                        .taiKhoanFK(taiKhoanB.build());
-                taiKhoanB.chiNhanh(chiNhanhB.build());
-                logger.info("insert: " + taiKhoanRepository.save(taiKhoanB.build()));
-                logger.info("insert: " + chiNhanhRepository.save(chiNhanhB.build()));
+//                TaiKhoan.TaiKhoanBuilder taiKhoanB = TaiKhoan.builder()
+//                        .taiKhoan("hellokitty@gmail.com")
+//                        .matKhau(passwordEncoder.encode("123"))
+//                        .enabled(true);
+//                ChiNhanh.ChiNhanhBuilder chiNhanhB = ChiNhanh.builder()
+//                        .id(2L)
+//                        .tenChiNhanh("Fahasa - Aeon Binh Tan")
+//                        .diaChi("Binh Tan")
+//                        .email("aeonBinhTan@gmail.com")
+//                        .taiKhoanFK(taiKhoanB.build());
+//                taiKhoanB.chiNhanh(chiNhanhB.build());
+//                logger.info("insert: " + taiKhoanRepository.save(taiKhoanB.build()));
+//                logger.info("insert: " + chiNhanhRepository.save(chiNhanhB.build()));
 
 //                TaiKhoan taiKhoan = new TaiKhoan("user1", "1111");
 //                ChiNhanh chiNhanh = new ChiNhanh(1L, "hello", "Q7");

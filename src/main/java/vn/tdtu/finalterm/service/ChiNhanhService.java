@@ -1,6 +1,7 @@
 package vn.tdtu.finalterm.service;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import vn.tdtu.finalterm.models.ResponseObject;
 import vn.tdtu.finalterm.models.TaiKhoan;
 import vn.tdtu.finalterm.repositories.ChiNhanhRepository;
 import vn.tdtu.finalterm.repositories.TaiKhoanRepository;
+import vn.tdtu.finalterm.repositories.VerificationTokenRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +28,8 @@ public class ChiNhanhService {
     private ChiNhanhRepository chiNhanhRepository;
     @Autowired
     private TaiKhoanRepository taiKhoanRepository;
+    @Autowired
+    private VerificationTokenRepository verificationTokenRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
@@ -141,12 +145,32 @@ public class ChiNhanhService {
         );
     }
 
+    @Transactional
     public ResponseEntity<ResponseObject> deleteChiNhanh(Long id) {
         Optional<ChiNhanh> foundCN = chiNhanhRepository.findById(id);
+        if(!foundCN.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ResponseObject("failed", "Cannot find ChiNhanh to delete", "")
+            );
+        }
+
+        Optional<TaiKhoan> foundTK = taiKhoanRepository.findById(foundCN.get().getTaiKhoanFK().getTaiKhoan());
+        if(!foundTK.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ResponseObject("failed", "Cannot find TaiKhoan to delete", "")
+            );
+        }
+
+        if(!foundTK.get().isEnabled()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ResponseObject("failed", "Can't delete unauthenticated TaiKhoan", "")
+            );
+        }
 
         if(foundCN.isPresent()) {
+            verificationTokenRepository.deleteByTaiKhoan(foundTK.get());
             chiNhanhRepository.deleteById(id);
-            taiKhoanRepository.deleteById(foundCN.get().getTaiKhoanFK().getTaiKhoan());
+            taiKhoanRepository.deleteById(foundTK.get().getTaiKhoan());
 
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject("ok", "Delete ChiNhanh Success", "")

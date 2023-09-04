@@ -49,7 +49,7 @@ public class ChiNhanhController {
     }
 
     @PutMapping("/chiNhanh/{id}")
-    public ResponseEntity<ResponseObject> updateChiNhanh(@Valid @RequestBody ChiNhanh chiNhanh, @PathVariable("id") Long id) {
+    public ResponseEntity<ResponseObject> updateChiNhanh(@RequestBody ChiNhanh chiNhanh, @PathVariable("id") Long id) {
         return chiNhanhService.updateChiNhanh(chiNhanh, id);
     }
 
