@@ -161,11 +161,11 @@ public class ChiNhanhService {
             );
         }
 
-        if(!foundTK.get().isEnabled()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ResponseObject("failed", "Can't delete unauthenticated TaiKhoan", "")
-            );
-        }
+//        if(!foundTK.get().isEnabled()) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+//                    new ResponseObject("failed", "Can't delete unauthenticated TaiKhoan", "")
+//            );
+//        }
 
         if(foundCN.isPresent()) {
             verificationTokenRepository.deleteByTaiKhoan(foundTK.get());
