@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
+import vn.tdtu.finalterm.dto.ChangePasswordDTO;
 import vn.tdtu.finalterm.event.AccountSessionScope;
 import vn.tdtu.finalterm.event.ChangePasswordCompleteEvent;
 import vn.tdtu.finalterm.event.RegistrationCompleteEvent;
@@ -128,6 +129,32 @@ public class TaiKhoanService {
                         + request.getServerPort()
                         + request.getContextPath()
         ));
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("ok", "Change Password Success", updatedTaiKhoan)
+        );
+    }
+
+    public ResponseEntity<ResponseObject> doiMatKhauTheoNguoiDung(ChangePasswordDTO taiKhoan) {
+        Optional<TaiKhoan> foundTaiKhoan = taiKhoanRepository.findById(taiKhoan.getTaiKhoan());
+
+        if(!foundTaiKhoan.isPresent()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                new ResponseObject("failed", "Wrong Password or Account not found", "")
+        );
+
+        if(!passwordEncoder.matches(taiKhoan.getMatKhau(),foundTaiKhoan.get().getMatKhau())) {
+            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
+                    new ResponseObject("failed", "Password not matches", "")
+            );
+        }
+
+        TaiKhoan updatedTaiKhoan = foundTaiKhoan.map(account -> {
+            account.setMatKhau(passwordEncoder.encode(taiKhoan.getMatKhauMoi()));
+
+            return taiKhoanRepository.save(account);
+        }).orElseGet(() -> {
+            return null;
+        });
 
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("ok", "Change Password Success", updatedTaiKhoan)

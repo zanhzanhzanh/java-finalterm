@@ -8,15 +8,21 @@ public enum DefaultValues {
     // Expiration Time (Second)
     EXPIRATION_TIME(600.0f),
     // JWT Token Time Expired (Second)
-    JWT_TOKEN_TIME(5 * 60 * 60.0f);
+    JWT_TOKEN_TIME(5 * 60 * 60.0f),
+    // FrontEnd URL For Send Email
+    FRONTEND_URL("");
 
-    private float value;
+    private Object value;
 
-    private DefaultValues(float value) {
+    private DefaultValues(Object value) {
         this.value = value;
     }
 
     public float getValue() {
-        return value;
+        return (float) value;
+    }
+
+    public String getUrl() {
+        return (String) value;
     }
 }

@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vn.tdtu.finalterm.dto.ChangePasswordDTO;
 import vn.tdtu.finalterm.models.ResponseObject;
 import vn.tdtu.finalterm.models.TaiKhoan;
 import vn.tdtu.finalterm.service.TaiKhoanService;
@@ -23,6 +24,11 @@ public class TaiKhoanController {
     @PutMapping("/taiKhoan") // Custom Router
     public ResponseEntity<ResponseObject> doiMatKhau(@RequestBody TaiKhoan taiKhoan, final HttpServletRequest request) {
         return taiKhoanService.doiMatKhau(taiKhoan, request);
+    }
+
+    @PutMapping("/taiKhoanChange") // Custom Router
+    public ResponseEntity<ResponseObject> doiMatKhauTheoNguoiDung(@Valid @RequestBody ChangePasswordDTO taiKhoan) {
+        return taiKhoanService.doiMatKhauTheoNguoiDung(taiKhoan);
     }
 
     @GetMapping("/verifyRegistration")

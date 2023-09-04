@@ -8,6 +8,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import vn.tdtu.finalterm.config.EmailSenderService;
+import vn.tdtu.finalterm.enums.DefaultValues;
 import vn.tdtu.finalterm.event.RegistrationCompleteEvent;
 import vn.tdtu.finalterm.models.TaiKhoan;
 import vn.tdtu.finalterm.service.TaiKhoanService;
@@ -30,8 +31,9 @@ public class RegistrationCompleteEventListener implements
         String token = UUID.randomUUID().toString();
         taiKhoanService.saveVerificationTokenForTK(token, taiKhoan);
 
+        String FEURL = DefaultValues.FRONTEND_URL.getUrl();
         // Send Mail to user
-        String url = event.getApplicationUrl() + "/verifyRegistration?token=" + token;
+        String url = FEURL.isEmpty() ? event.getApplicationUrl() + "/verifyRegistration?token=" + token : FEURL + "?token=" + token;
 
         //sendVerificationEmail
 //        log.info("Click the link to verify your account: {}", url);
